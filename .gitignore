@@ -8,3 +8,5 @@
 
 ## front
 **/*.lock
+/ant-design-vue-jeecg/.yarn/
+/ant-design-vue-jeecg/.yarnrc.yml
