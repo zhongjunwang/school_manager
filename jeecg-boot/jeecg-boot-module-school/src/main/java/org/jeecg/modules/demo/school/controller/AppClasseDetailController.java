@@ -7,9 +7,15 @@ import java.util.stream.Collectors;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.StrUtil;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.system.api.ISysBaseAPI;
 import org.jeecg.common.system.query.QueryGenerator;
 import org.jeecg.common.util.oConvertUtils;
 import org.jeecg.modules.demo.school.entity.AppClasseDetail;
@@ -20,6 +26,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 
+import org.jeecg.modules.demo.school.service.IStudentService;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -49,6 +56,10 @@ import org.jeecg.common.aspect.annotation.AutoLog;
 public class AppClasseDetailController extends JeecgController<AppClasseDetail, IAppClasseDetailService> {
 	@Autowired
 	private IAppClasseDetailService appClasseDetailService;
+	@Resource
+	private IStudentService studentService;
+	@Resource
+	private ISysBaseAPI baseAPI;
 	
 	/**
 	 * 分页列表查询
@@ -70,8 +81,7 @@ public class AppClasseDetailController extends JeecgController<AppClasseDetail, 
 		Page<AppClasseDetail> page = new Page<AppClasseDetail>(pageNo, pageSize);
 		IPage<AppClasseDetail> pageList = appClasseDetailService.page(page, queryWrapper);
 		pageList.getRecords().stream().map(record->{
-			record.setNowClassHour(record.getCheckInList()==null?0:record.getCheckInList().size());
-			record.setLeftClassHour(record.getTotalClassHour()-record.getNowClassHour());
+			record.initData();
 			return record;
 		}).collect(Collectors.toList());
 		return Result.OK(pageList);
@@ -118,6 +128,21 @@ public class AppClasseDetailController extends JeecgController<AppClasseDetail, 
 		appClasseDetailService.removeById(id);
 		return Result.OK("删除成功!");
 	}
+
+	 @AutoLog(value = "上课情况-签到")
+	 @ApiOperation(value="上课情况-签到", notes="上课情况-签到")
+	 @GetMapping(value = "/checkIn")
+	 public Result<String> checkIn(@RequestParam(name="id",required=true) String id) {
+		 AppClasseDetail appClasseDetail = appClasseDetailService.getById(id);
+		 appClasseDetail.setLastCheckInTime(DateTime.now());
+		 appClasseDetail.addCheckIn();
+		 appClasseDetail.initData();
+		 appClasseDetailService.updateById(appClasseDetail);
+		 String classType=baseAPI.translateDict("classes_type",appClasseDetail.getClassesType());
+		 String student=baseAPI.translateDict("student,name,id",appClasseDetail.getName());
+		 studentService.sendMsg(appClasseDetail.getName(), StrUtil.format("尊敬的家长您好，您的孩子{}的{}课程今天已来签到,当前总课时{},已上课时{},剩余课时{}",student,classType,appClasseDetail.getTotalClassHour(),appClasseDetail.getNowClassHour(),appClasseDetail.getLeftClassHour()));
+		 return Result.OK("签到成功!");
+	 }
 	
 	/**
 	 *  批量删除

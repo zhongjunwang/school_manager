@@ -42,9 +42,9 @@
     <div class="table-operator">
       <a-button @click="handleAdd" type="primary" icon="plus">新增</a-button>
       <a-button type="primary" icon="download" @click="handleExportXls('上课情况')">导出</a-button>
-      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">
-        <a-button type="primary" icon="import">导入</a-button>
-      </a-upload>
+<!--      <a-upload name="file" :showUploadList="false" :multiple="false" :headers="tokenHeader" :action="importExcelUrl" @change="handleImportExcel">-->
+<!--        <a-button type="primary" icon="import">导入</a-button>-->
+<!--      </a-upload>-->
       <!-- 高级查询区域 -->
       <j-super-query :fieldList="superFieldList" ref="superQueryModal" @handleSuperQuery="handleSuperQuery"></j-super-query>
       <a-dropdown v-if="selectedRowKeys.length > 0">
@@ -79,6 +79,11 @@
         <template slot="htmlSlot" slot-scope="text">
           <div v-html="text"></div>
         </template>
+
+        <template slot="checkInDetail" slot-scope="text,record">
+          <a @click="handleDetail(record)">详情</a>
+        </template>
+
         <template slot="imgSlot" slot-scope="text,record">
           <span v-if="!text" style="font-size: 12px;font-style: italic;">无图片</span>
           <img v-else :src="getImgView(text)" :preview="record.id" height="25px" alt="" style="max-width:80px;font-size: 12px;font-style: italic;"/>
@@ -100,7 +105,11 @@
           <a @click="handleEdit(record)">编辑</a>
 
           <a-divider type="vertical" />
-          <a-dropdown>
+
+           <a-popconfirm v-if="!record.todayCheckIn&&record.leftClassHour>0" title="确定签到吗?" @confirm="() => handleCheckIn(record.id)">
+                  <a>签到</a>
+                </a-popconfirm>
+<!--          <a-dropdown >
             <a class="ant-dropdown-link">更多 <a-icon type="down" /></a>
             <a-menu slot="overlay">
               <a-menu-item>
@@ -112,7 +121,7 @@
                 </a-popconfirm>
               </a-menu-item>
             </a-menu>
-          </a-dropdown>
+          </a-dropdown>-->
         </span>
 
       </a-table>
@@ -129,6 +138,7 @@
   import { JeecgListMixin } from '@/mixins/JeecgListMixin'
   import AppClasseDetailModal from './modules/AppClasseDetailModal'
   import {filterMultiDictText} from '@/components/dict/JDictSelectUtil'
+  import {getAction} from "@api/manage";
 
   export default {
     name: 'AppClasseDetailList',
@@ -184,7 +194,8 @@
           {
             title:'签到详情',
             align:"center",
-            dataIndex: 'checkIn'
+            dataIndex: 'checkInList',
+            scopedSlots: { customRender: 'checkInDetail' }
           },
           {
             title:'最近签到时间',
@@ -209,6 +220,7 @@
           deleteBatch: "/school/appClasseDetail/deleteBatch",
           exportXlsUrl: "/school/appClasseDetail/exportXls",
           importExcelUrl: "school/appClasseDetail/importExcel",
+          checkIn:'/school/appClasseDetail/checkIn'
           
         },
         dictOptions:{},
@@ -224,6 +236,9 @@
       },
     },
     methods: {
+      handleCheckIn(id){
+        this.handleGet(this.url.checkIn,{id})
+      },
       initDictConfig(){
       },
       getSuperFieldList(){

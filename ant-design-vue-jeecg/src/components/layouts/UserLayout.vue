@@ -15,7 +15,7 @@
 
       <route-view></route-view>
 
-      <div class="footer">
+      <div class="footer" v-if="false">
         <div class="links">
           <a href="http://doc.jeecg.com" target="_blank">帮助</a>
           <a href="https://github.com/zhangdaiscott/jeecg-boot" target="_blank">隐私</a>

@@ -3,26 +3,47 @@
     <j-form-container :disabled="formDisabled">
       <a-form-model ref="form" :model="model" :rules="validatorRules" slot="detail">
         <a-row>
-          <a-col :span="24">
-            <a-form-model-item label="学生" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="name">
-              <j-dict-select-tag type="list" v-model="model.name" dictCode="student,name,id" placeholder="请选择学生" />
-            </a-form-model-item>
+          <a-col :span="disabled?18:24">
+            <a-col :span="24">
+              <a-form-model-item  label="学生" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="name">
+                <j-dict-select-tag :disabled="model.id" type="list" v-model="model.name" dictCode="student,name,id" placeholder="请选择学生" />
+              </a-form-model-item>
+            </a-col>
+            <a-col :span="24">
+              <a-form-model-item label="课程类型" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="classesType">
+                <j-dict-select-tag type="list" v-model="model.classesType" dictCode="classes_type" placeholder="请选择课程类型" />
+              </a-form-model-item>
+            </a-col>
+            <a-col :span="24">
+              <a-form-model-item label="缴费金额" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="amount">
+                <a-input v-model="model.amount" placeholder="请输入缴费金额"  ></a-input>
+              </a-form-model-item>
+            </a-col>
+            <a-col :span="24">
+              <a-form-model-item label="总课时" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="totalClassHour">
+                <a-input-number v-model="model.totalClassHour" placeholder="请输入总课时" style="width: 100%" />
+              </a-form-model-item>
+            </a-col>
+            <template v-if="disabled">
+              <a-col :span="24">
+                <a-form-model-item label="已上课时" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="totalClassHour">
+                  <a-input-number v-model="model.nowClassHour" placeholder="" style="width: 100%" />
+                </a-form-model-item>
+              </a-col>
+              <a-col :span="24">
+                <a-form-model-item label="剩余课时" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="totalClassHour">
+                  <a-input-number v-model="model.leftClassHour" placeholder="" style="width: 100%" />
+                </a-form-model-item>
+              </a-col>
+            </template>
           </a-col>
-          <a-col :span="24">
-            <a-form-model-item label="课程类型" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="classesType">
-              <j-dict-select-tag type="list" v-model="model.classesType" dictCode="classes_type" placeholder="请选择课程类型" />
-            </a-form-model-item>
+          <a-col :span="6" v-if="disabled">
+            签到详情
+            <a-list-item v-for="item in model.checkInList">
+            {{item.createTime |dayjs}}
+            </a-list-item>
           </a-col>
-          <a-col :span="24">
-            <a-form-model-item label="缴费金额" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="amount">
-              <a-input v-model="model.amount" placeholder="请输入缴费金额"  ></a-input>
-            </a-form-model-item>
-          </a-col>
-          <a-col :span="24">
-            <a-form-model-item label="总课时" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="totalClassHour">
-              <a-input-number v-model="model.totalClassHour" placeholder="请输入总课时" style="width: 100%" />
-            </a-form-model-item>
-          </a-col>
+
         </a-row>
       </a-form-model>
     </j-form-container>

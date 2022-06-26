@@ -69,6 +69,10 @@ public class StudentController extends JeecgController<Student, IStudentService>
 		QueryWrapper<Student> queryWrapper = QueryGenerator.initQueryWrapper(student, req.getParameterMap());
 		Page<Student> page = new Page<Student>(pageNo, pageSize);
 		IPage<Student> pageList = studentService.page(page, queryWrapper);
+		pageList.getRecords().stream().map(record->{
+			record.setTotalAmount(studentService.getTotalAmount(record.getId()));
+			return record;
+		}).collect(Collectors.toList());
 		return Result.OK(pageList);
 	}
 	

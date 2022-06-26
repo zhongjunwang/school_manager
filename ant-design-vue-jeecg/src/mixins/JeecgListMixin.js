@@ -212,6 +212,19 @@ export const JeecgListMixin = {
         }
       });
     },
+    handleGet: function (url,param) {
+      var that = this;
+      getAction(url, param).then((res) => {
+        if (res.success) {
+          //重新计算分页问题
+          that.reCalculatePage(1)
+          that.$message.success(res.message);
+          that.loadData();
+        } else {
+          that.$message.warning(res.message);
+        }
+      });
+    },
     reCalculatePage(count){
       //总数量-count
       let total=this.ipagination.total-count;

@@ -8,7 +8,7 @@
       <a href="https://ant.design/">Ant Design</a>
       <a href="https://vuecomponent.github.io/ant-design-vue/docs/vue/introduce-cn/">Vue Antd</a>
     </div>
-    <div class="copyright">
+    <div class="copyright" v-if="false">
       Copyright
       <a-icon type="copyright"/>
       2019 <span>JEECG开源社区 出品</span>

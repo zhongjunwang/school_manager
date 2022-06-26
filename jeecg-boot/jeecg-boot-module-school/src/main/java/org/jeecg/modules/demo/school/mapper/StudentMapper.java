@@ -1,5 +1,6 @@
 package org.jeecg.modules.demo.school.mapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -14,4 +15,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface StudentMapper extends BaseMapper<Student> {
 
+    BigDecimal getTotalAmount(String id);
 }
