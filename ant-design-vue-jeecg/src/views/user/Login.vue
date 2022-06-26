@@ -6,12 +6,12 @@
           <login-account ref="alogin" @validateFail="validateFail" @success="requestSuccess" @fail="requestFailed"></login-account>
         </a-tab-pane>
 
-        <a-tab-pane key="tab2" tab="手机号登录">
-          <login-phone ref="plogin" @validateFail="validateFail" @success="requestSuccess" @fail="requestFailed"></login-phone>
-        </a-tab-pane>
+<!--        <a-tab-pane key="tab2" tab="手机号登录">-->
+<!--          <login-phone ref="plogin" @validateFail="validateFail" @success="requestSuccess" @fail="requestFailed"></login-phone>-->
+<!--        </a-tab-pane>-->
       </a-tabs>
 
-      <a-form-model-item>
+      <a-form-model-item v-if="false">
         <a-checkbox @change="handleRememberMeChange" default-checked>自动登录</a-checkbox>
         <router-link :to="{ name: 'alteration'}" class="forge-password" style="float: right;">
           忘记密码

@@ -35,6 +35,11 @@
 			<artifactId>jeecg-system-local-api</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.jeecgframework.boot</groupId>
+			<artifactId>jeecg-boot-module-school</artifactId>
+			<version>${jeecgboot.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 		</dependency>

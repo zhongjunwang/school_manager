@@ -4,7 +4,7 @@
 
 
 
-JEECG BOOT 低代码开发平台（前后端分离版本）
+课程管理系统 低代码开发平台（前后端分离版本）
 ===============
 
 当前最新版本： 3.2.0（发布日期：2022-04-25）
@@ -222,7 +222,7 @@ Jeecg-Boot低代码开发平台，可以应用在任何J2EE项目的开发中，
 #### 微服务架构图
 ![微服务架构图](https://jeecgos.oss-cn-beijing.aliyuncs.com/files/jeecgboot_springcloud2022.png "在这里输入图片标题")
 
-### Jeecg Boot 产品功能蓝图
+### 课程管理系统 产品功能蓝图
 ![功能蓝图](https://jeecgos.oss-cn-beijing.aliyuncs.com/upload/test/Jeecg-Boot-lantu202005_1590912449914.jpg "在这里输入图片标题")
 
 

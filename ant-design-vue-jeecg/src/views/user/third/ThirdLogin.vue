@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="user-login-other">
+    <div class="user-login-other" v-if="false">
       <span>其他登录方式</span>
       <a @click="onThirdLogin('github')" title="github"><a-icon class="item-icon" type="github"></a-icon></a>
       <a @click="onThirdLogin('wechat_enterprise')" title="企业微信"> <icon-font class="item-icon" type="icon-qiyeweixin3" /></a>
